@@ -1,90 +1,67 @@
-// let a: unknown;
-
-// a = 5;
-
-// if (typeof a === "string") {
-//   a.toUpperCase();
+// function getName<T extends { name: string }>(user: T): string {
+//   return user.name;
 // }
 
-// interface Car {
-//   color: string;
-//   maxSpeed: number;
-//   weight?: number;
-//   readonly number: string;
+// getName({ name: "Ann", age: 20 });
+// getName({ name: "John", id: 20 });
+// getName({ name: "John", weight: 70, height: 175 });
+// getName({ username: "John" }); // error
+
+// function getLength<T extends { length: number }>(data: T): number {
+//   return data.length;
 // }
 
-// const car: Car = {
-//   color: "red",
-//   maxSpeed: 200,
-//   weight: 600,
-//   number: "583476t834ABC",
-// };
+// getLength("Hello");
+// getLength(["Hello"]);
+// getLength(5); // error
 
-// const car1: Car = {
-//   color: "yellow",
-//   maxSpeed: 220,
-//   weight: 700,
-//   number: "585676t834ABC",
-// };
-
-// car.color = "orange";
-
-// const array: number[] = [1, 2, 3];
-// // const array: Array<number> = [1, 2, 3];
-
-// const array1: (string | number | boolean)[] = [1, 2, "3", "4", true];
-
-// const cars: Car[] = [car, car1];
-
-// const data = cars.map(({ color, maxSpeed }) => ({
-//   color,
-//   maxSpeed,
-// }));
-
-// let obj: null | Car = null;
-
-// obj = car;
-
-// type PromiseStatus = "pending" | "resolved" | "rejected";
-
-// let promiseStatus: PromiseStatus = "pending";
-
-// promiseStatus = "resolved";
-
-// interface PromiseType {
-//   status: PromiseStatus;
+// function logger<T, Y>(a: T, b: Y): void {
+//   console.log(a);
+//   console.log(b);
 // }
 
-// const promise: PromiseType = {
-//   status: "pending",
+// logger<number, number>(1, 3);
+// logger<string, boolean>("4", true);
+// logger<(number | string)[], { a: number }>([1, "3"], { a: 7 });
+
+// interface HttpResp<T> {
+//   data: T;
+//   code: number;
+//   message: string;
+// }
+
+// // GET /person
+
+// interface Person {
+//   id: number;
+//   name: string;
+//   age: number;
+// }
+
+// const getPersonResp: HttpResp<Person> = {
+//   data: { id: 1, name: "Olha", age: 50 },
+//   code: 200,
+//   message: "Success",
 // };
 
-// promise.status = "rejected";
+// // POST /todo
 
-const func = (name: string, age: number): void => {
-  console.log(`My name is ${name}, I'm ${age}`);
-};
+// interface ToDo {
+//   id: number;
+//   title: string;
+//   description: string;
+// }
 
-func("John", 40);
-
-interface User {
-  name: string;
-  age: number;
-  presentJob?: (job: string) => void;
-}
-
-// const func1 = (user: User): string => {
-//   return `My name is ${user.name}, I'm ${user.age}`;
+// const postToDoResp: HttpResp<ToDo> = {
+//   data: { id: 2, title: "Olha", description: "test" },
+//   code: 201,
+//   message: "Created",
 // };
 
-// const res = func1({ name: "Ann", age: 20 });
+// // GET /username
 
-const olha: User = {
-  name: "Olha",
-  age: 15,
-  presentJob: (job) => console.log(job),
-};
-
-if (olha.presentJob) {
-  olha.presentJob("Lawyer");
-}
+// const getNameResp: HttpResp<string> = {
+//   data: "Olha",
+//   code: 200,
+//   message: "Success",
+// };
