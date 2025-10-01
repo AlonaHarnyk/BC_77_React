@@ -1,0 +1,15 @@
+.userName {
+    color: blue;
+}
+
+.isOnline {
+    background-color: antiquewhite;
+}
+
+.online {
+    color: green;
+}
+
+.offline {
+    color: red;
+}
