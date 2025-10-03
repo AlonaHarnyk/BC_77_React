@@ -5,9 +5,10 @@ import clsx from "clsx";
 interface Props {
   user: UserType;
   deleteUser: (id: string) => void;
+  changeUserStatus: (id: string) => void;
 }
 
-const User = ({ user: { name, email, isOnline, id }, deleteUser }: Props) => {
+const User = ({ user: { name, email, isOnline, id }, deleteUser ,changeUserStatus}: Props) => {
   const isOnlineStyles = clsx(
     styles.isOnline,
     isOnline === "yes" ? styles.online : styles.offline
@@ -34,6 +35,7 @@ const User = ({ user: { name, email, isOnline, id }, deleteUser }: Props) => {
       >
         Delete
       </button>
+      {isOnline && <button onClick={() => changeUserStatus(id)} >Change Online Status</button>}
     </>
   );
 };
