@@ -1,15 +1,19 @@
+import { useState } from "react";
 import { data } from "../../data/users.ts";
-import User from "../User/User.tsx";
 import UserList from "../UserList/UserList.tsx";
 
 const App = () => {
+  const [isListVisible, setIsListVisible] = useState(false)
+
+  const toggleUsers = () => {
+    setIsListVisible(!isListVisible)
+  }
+
+
   return (
     <>
-      <h2>User</h2>
-      <UserList users={data} />
-      <User user={data[0]} />
-      <User user={data[1]} />
-      <User user={data[2]} />
+      <button onClick={toggleUsers}>{`${isListVisible ? 'Hide' : 'Show'} users`}</button>
+      {isListVisible && <UserList users={data} />}
     </>
   );
 };
