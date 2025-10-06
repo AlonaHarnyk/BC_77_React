@@ -2,10 +2,16 @@ import { useState } from "react";
 import { data } from "../../data/users.ts";
 import UserList from "../UserList/UserList.tsx";
 import type { UserType } from "../types/user.ts";
+import { AddUserForm } from "../AddUserForm/AddUserForm.tsx";
 
 const App = () => {
   const [isListVisible, setIsListVisible] = useState(false);
   const [users, setUsers] = useState<UserType[]>(data);
+  const [isAddUserFormVisible, setIsAddUserFormVisible] = useState(false);
+
+  const toggleAddUserForm = () => {
+    setIsAddUserFormVisible(!isAddUserFormVisible);
+  };
 
   const toggleUsers = () => {
     setIsListVisible(!isListVisible);
@@ -33,11 +39,20 @@ const App = () => {
         isListVisible ? "Hide" : "Show"
       } users`}</button>
       {isListVisible && (
-        <UserList
-          users={users}
-          deleteUser={deleteUser}
-          changeUserStatus={changeUserStatus}
-        />
+        <>
+          <UserList
+            users={users}
+            deleteUser={deleteUser}
+            changeUserStatus={changeUserStatus}
+          />
+          {isAddUserFormVisible ? (
+            <AddUserForm />
+          ) : (
+            <button onClick={toggleAddUserForm} type="button">
+              Add user
+            </button>
+          )}
+        </>
       )}
     </>
   );
