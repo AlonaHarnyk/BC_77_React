@@ -4,3 +4,9 @@ export interface UserType {
   email: string;
   isOnline?: string;
 }
+
+export interface UserData {
+  name: string;
+  email: string;
+  isOnline?: string;
+}

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { data } from "../../data/users.ts";
 import UserList from "../UserList/UserList.tsx";
-import type { UserType } from "../types/user.ts";
+import type { UserData, UserType } from "../types/user.ts";
 import { AddUserForm } from "../AddUserForm/AddUserForm.tsx";
+
+
 
 const App = () => {
   const [isListVisible, setIsListVisible] = useState(false);
@@ -21,6 +23,10 @@ const App = () => {
       return prevUsers.filter((user) => user.id !== id);
     });
   };
+
+  const addUser = (userData: UserData) => {
+    console.log(userData)
+  }
 
   const changeUserStatus = (id: string) => {
     setUsers((prevUsers) =>
@@ -46,7 +52,8 @@ const App = () => {
             changeUserStatus={changeUserStatus}
           />
           {isAddUserFormVisible ? (
-            <AddUserForm />
+            <AddUserForm
+            addUser={addUser}/>
           ) : (
             <button onClick={toggleAddUserForm} type="button">
               Add user
