@@ -4,15 +4,13 @@ import UserList from "../UserList/UserList.tsx";
 import type { UserData, UserType } from "../types/user.ts";
 import { AddUserForm } from "../AddUserForm/AddUserForm.tsx";
 
-
-
 const App = () => {
   const [isListVisible, setIsListVisible] = useState(false);
   const [users, setUsers] = useState<UserType[]>(data);
   const [isAddUserFormVisible, setIsAddUserFormVisible] = useState(false);
 
-  const toggleAddUserForm = () => {
-    setIsAddUserFormVisible(!isAddUserFormVisible);
+  const showAddUserForm = () => {
+    setIsAddUserFormVisible(true);
   };
 
   const toggleUsers = () => {
@@ -25,8 +23,12 @@ const App = () => {
   };
 
   const addUser = (userData: UserData) => {
-    console.log(userData)
-  }
+    const newUser = { ...userData, id: String(Date.now()) };
+    setUsers((prevUsers) => {
+      return [...prevUsers, newUser];
+    });
+    setIsAddUserFormVisible(false);
+  };
 
   const changeUserStatus = (id: string) => {
     setUsers((prevUsers) =>
@@ -52,13 +54,13 @@ const App = () => {
             changeUserStatus={changeUserStatus}
           />
           {isAddUserFormVisible ? (
-            <AddUserForm
-            addUser={addUser}/>
+            <AddUserForm addUser={addUser} />
           ) : (
-            <button onClick={toggleAddUserForm} type="button">
+            <button onClick={showAddUserForm} type="button">
               Add user
             </button>
           )}
+          
         </>
       )}
     </>
