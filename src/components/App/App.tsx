@@ -1,68 +1,36 @@
-import { useState } from "react";
-import { data } from "../../data/users.ts";
-import UserList from "../UserList/UserList.tsx";
-import type { UserData, UserType } from "../types/user.ts";
-import { AddUserForm } from "../AddUserForm/AddUserForm.tsx";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import type { Contact } from "../types/contact";
+import ContactsList from "../ContactsList/ContactsList";
 
 const App = () => {
-  const [isListVisible, setIsListVisible] = useState(false);
-  const [users, setUsers] = useState<UserType[]>(data);
-  const [isAddUserFormVisible, setIsAddUserFormVisible] = useState(false);
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [isListVisible, setIsVisisble] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const showAddUserForm = () => {
-    setIsAddUserFormVisible(true);
-  };
+  useEffect(() => {
+    if (!isListVisible) {
+      setContacts([]);
+    } else {
+      setIsLoading(true)
+      axios("https://6240d2109b450ae274385b44.mockapi.io/api/contacts").then(
+        ({ data }) => setContacts(data)
+      ).finally(() => setIsLoading(false));
+    }
+    // return () => console.log(123)
+  }, [isListVisible]);
 
-  const toggleUsers = () => {
-    setIsListVisible(!isListVisible);
-  };
-  const deleteUser = (id: string) => {
-    setUsers((prevUsers) => {
-      return prevUsers.filter((user) => user.id !== id);
-    });
-  };
-
-  const addUser = (userData: UserData) => {
-    const newUser = { ...userData, id: String(Date.now()) };
-    setUsers((prevUsers) => {
-      return [...prevUsers, newUser];
-    });
-    setIsAddUserFormVisible(false);
-  };
-
-  const changeUserStatus = (id: string) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((user) => {
-        if (user.id === id) {
-          return { ...user, isOnline: user.isOnline === "yes" ? "no" : "yes" };
-        }
-        return user;
-      })
-    );
+  const toggleVisibility = () => {
+    setIsVisisble(!isListVisible);
   };
 
   return (
     <>
-      <button onClick={toggleUsers}>{`${
-        isListVisible ? "Hide" : "Show"
-      } users`}</button>
-      {isListVisible && (
-        <>
-          <UserList
-            users={users}
-            deleteUser={deleteUser}
-            changeUserStatus={changeUserStatus}
-          />
-          {isAddUserFormVisible ? (
-            <AddUserForm addUser={addUser} />
-          ) : (
-            <button onClick={showAddUserForm} type="button">
-              Add user
-            </button>
-          )}
-          
-        </>
-      )}
+      <button onClick={toggleVisibility}>
+        {isListVisible ? "Hide users" : "Show users"}
+      </button>
+      {isLoading && <p>Loading...</p>}
+      {contacts.length > 0 && <ContactsList contacts={contacts} />}
     </>
   );
 };
