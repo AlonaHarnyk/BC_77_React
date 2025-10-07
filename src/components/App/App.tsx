@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import type { Contact } from "../types/contact";
 import ContactsList from "../ContactsList/ContactsList";
+import PhoneNumber from "../PhoneNumber/PhoneNumber";
 
 const App = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -12,10 +13,10 @@ const App = () => {
     if (!isListVisible) {
       setContacts([]);
     } else {
-      setIsLoading(true)
-      axios("https://6240d2109b450ae274385b44.mockapi.io/api/contacts").then(
-        ({ data }) => setContacts(data)
-      ).finally(() => setIsLoading(false));
+      setIsLoading(true);
+      axios("https://6240d2109b450ae274385b44.mockapi.io/api/contacts")
+        .then(({ data }) => setContacts(data))
+        .finally(() => setIsLoading(false));
     }
     // return () => console.log(123)
   }, [isListVisible]);

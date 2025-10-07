@@ -1,22 +1,31 @@
-
 import type { Contact } from "../types/contact";
+import PhoneNumber from "../PhoneNumber/PhoneNumber";
+import css from "../ContactsList/ContactsList.module.css";
+import { useState } from "react";
 
 interface Props {
   contacts: Contact[];
 }
 
 const ContactsList = ({ contacts }: Props) => {
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   return (
-    <ul>
-      {contacts.map(({id, name, number}) => {
-        return (
-          <li key={id}>
-            <p>Name: {name}</p>
-            <p>Phone: {number}</p>
-          </li>
-        );
-      })}
-    </ul>
+    <div className={css.listWrapper}>
+      <ul>
+        {contacts.map(({ id, name, number }) => {
+          return (
+            <li key={id}>
+              <p>Name: {name}</p>
+              <button onClick={() => setPhoneNumber(number)}>
+                Get phone number
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+      {phoneNumber !== "" && <PhoneNumber phoneNumber={phoneNumber} />}
+    </div>
   );
 };
 
