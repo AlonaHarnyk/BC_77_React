@@ -1,25 +1,15 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import type { Contact } from "../types/contact";
+import { useState } from "react";
 import ContactsList from "../ContactsList/ContactsList";
-import PhoneNumber from "../PhoneNumber/PhoneNumber";
-
+import { useQuery } from "@tanstack/react-query";
+import { getContacts } from "../../services/api";
 const App = () => {
-  const [contacts, setContacts] = useState<Contact[]>([]);
   const [isListVisible, setIsVisisble] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (!isListVisible) {
-      setContacts([]);
-    } else {
-      setIsLoading(true);
-      axios("https://6240d2109b450ae274385b44.mockapi.io/api/contacts")
-        .then(({ data }) => setContacts(data))
-        .finally(() => setIsLoading(false));
-    }
-    // return () => console.log(123)
-  }, [isListVisible]);
+  const { data, isLoading } = useQuery({
+    queryKey: ["contacts", isListVisible],
+    queryFn: getContacts,
+    enabled: isListVisible === true,
+  });
 
   const toggleVisibility = () => {
     setIsVisisble(!isListVisible);
@@ -31,7 +21,9 @@ const App = () => {
         {isListVisible ? "Hide users" : "Show users"}
       </button>
       {isLoading && <p>Loading...</p>}
-      {contacts.length > 0 && <ContactsList contacts={contacts} />}
+      {isListVisible && data && data.length > 0 && (
+        <ContactsList contacts={data} />
+      )}
     </>
   );
 };
