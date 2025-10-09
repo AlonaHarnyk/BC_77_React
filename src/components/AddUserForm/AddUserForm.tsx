@@ -1,5 +1,5 @@
 import { useId } from "react";
-import type { UserData } from "../types/user";
+import type { UserData } from "../types/contact";
 interface Props {
   addUser: (userData: UserData) => void;
 }
