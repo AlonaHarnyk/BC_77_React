@@ -1,57 +1,121 @@
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
+import * as yup from "yup";
+import css from "./AddContactForm.module.css";
+
+
+type HobbiesValues =
+  | "hiking"
+  | "fishing"
+  | "travel"
+  | "rest"
+  | "sport"
+  | "learning"
+  | "sing"
+  | "dance"
+  | "shopping";
+
+
+
+interface FormValues {
+  birthDay: Date;
+  city: string;
+  name: string;
+  email: string;
+  hasJob: boolean;
+  number: string;
+  job: string;
+  hobbies: HobbiesValues[];
+  description: string;
+  sex: "male" | "female";
+}
+
+const initialValue: FormValues = {
+  birthDay: new Date(),
+  city: "",
+  name: "",
+  email: "",
+  hasJob: false,
+  number: "",
+  job: "",
+  hobbies: [],
+  description: "",
+  sex: "male",
+};
+
+const contactSchema = yup.object({
+  birthDay: yup.date().min(new Date(1900, 0, 1)).required(),
+  city: yup.string(),
+  name: yup.string().required(),
+  email: yup.string().email().required(),
+  hasJob: yup.boolean(),
+  number: yup.string().required(),
+  job: yup.string(),
+  hobbies: yup
+    .array()
+    .of(
+      yup
+        .string()
+        .oneOf([
+          "hiking",
+          "fishing",
+          "travel",
+          "rest",
+          "sport",
+          "learning",
+          "sing",
+          "dance",
+          "shopping",
+        ])
+    ),
+  description: yup.string().max(300),
+  sex: yup.string().oneOf(["male", "female"]).required(),
+});
 
 interface Props {}
 export function AddContactForm({}: Props) {
-  const onSubmit = (values: any) => {
-    // const name = formData.get("name") as string;
-    // const email = formData.get("email") as string;
-    // const isOnline = formData.get("isOnline") as string;
-    // const userData = { name, email, isOnline };
-    // addUser(userData);
+  const onSubmit = (values: FormValues, formikHelpers: FormikHelpers<FormValues>) => {
 
     console.log(values);
-  };
-
-  const initialValue = {
-    birthDay: "",
-    city: "",
-    name: "",
-    email: "",
-    hasJob: false,
-    number: "",
-    job: "",
-    hobbies: [],
-    description: "",
-    sex: "",
+    formikHelpers.resetForm();
   };
 
   return (
-    <Formik onSubmit={onSubmit} initialValues={initialValue}>
+    <Formik
+      validationSchema={contactSchema}
+      onSubmit={onSubmit}
+      initialValues={initialValue}
+    >
       <Form>
         <label>
-          Name:
+          Name*:
           <Field type="text" name="name" />
         </label>
+        < ErrorMessage component='span' className={css.error} name="name"/>
         <label>
-          Email:
+          Email*:
           <Field type="email" name="email" />
         </label>
+        < ErrorMessage component='span' className={css.error} name="email"/>
         <label>
-          Phone:
+          Phone*:
           <Field type="text" name="number" />
         </label>
+        < ErrorMessage component='span' className={css.error} name="number"/>
         <label>
           City:
           <Field type="text" name="city" />
         </label>
+        < ErrorMessage component='span' className={css.error} name="city"/>
         <label>
           Job:
           <Field type="text" name="job" />
         </label>
+        < ErrorMessage component='span' className={css.error} name="job"/>
         <label>
-          Birth Date:
+          Birth Date*:
           <Field type="date" name="birthDay" />
         </label>
+        < ErrorMessage component='span' className={css.error} name="birthDay"/>
 
         <fieldset>
           <legend>Contact has a job?</legend>
@@ -63,14 +127,16 @@ export function AddContactForm({}: Props) {
             <Field type="radio" name="hasJob" value="no" />
             No
           </label>
+          < ErrorMessage component='span' className={css.error} name="hasJob"/>
         </fieldset>
 
         <label>
-          <Field as="select" name="sex" id="">
+          <Field as="select" name="sex">
             <option value="male">Male</option>
             <option value="female">Female</option>
           </Field>
         </label>
+        < ErrorMessage component='span' className={css.error} name="sex"/>
 
         <fieldset>
           <legend>Hobbies</legend>
@@ -110,12 +176,14 @@ export function AddContactForm({}: Props) {
             <Field type="checkbox" name="hobbies" value="shopping" />
             Shopping
           </label>
+          < ErrorMessage component='span' className={css.error} name="hobbies"/>
         </fieldset>
 
         <label htmlFor="description">
           Description
           <textarea name="description"></textarea>
         </label>
+        < ErrorMessage component='span' className={css.error} name="description"/>
 
         <button>Add</button>
       </Form>
