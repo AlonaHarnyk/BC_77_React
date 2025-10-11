@@ -3,8 +3,10 @@ import ContactsList from "../ContactsList/ContactsList";
 import { useQuery } from "@tanstack/react-query";
 import { getContacts } from "../../services/api";
 import SearchForm from "../SearchForm/SearchForm";
+import { AddContactForm } from "../AddContactForm/AddContactForm";
 const App = () => {
   const [isListVisible, setIsVisisble] = useState(true);
+  const [isFormVisible, setIsFormVisisble] = useState(false);
   const [curentPage, setCurentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -30,14 +32,22 @@ const App = () => {
     setSearchQuery(search);
   };
 
+  const handleFormVisibility = () => {
+    setIsFormVisisble(true);
+  };
+
   return (
     <>
       <button onClick={toggleVisibility}>
         {isListVisible ? "Hide users" : "Show users"}
       </button>
+
       {isLoading && <p>Loading...</p>}
       {isListVisible && data && data.length > 0 && (
         <div>
+          <button onClick={handleFormVisibility}> Add contact</button>
+          {isFormVisible && <AddContactForm />}
+
           <SearchForm onSubmit={handleFormSubmit} />
           <ContactsList contacts={data} />
           {data.length >= 5 && (
