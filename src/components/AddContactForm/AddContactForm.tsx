@@ -1,27 +1,16 @@
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as yup from "yup";
 import css from "./AddContactForm.module.css";
-
-
-type HobbiesValues =
-  | "hiking"
-  | "fishing"
-  | "travel"
-  | "rest"
-  | "sport"
-  | "learning"
-  | "sing"
-  | "dance"
-  | "shopping";
-
-
+import type { HobbiesValues } from "../types/contact";
+import { addContact, type ContactData } from "../../services/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface FormValues {
   birthDay: Date;
   city: string;
   name: string;
   email: string;
-  hasJob: boolean;
+  hasJob: string;
   number: string;
   job: string;
   hobbies: HobbiesValues[];
@@ -34,7 +23,7 @@ const initialValue: FormValues = {
   city: "",
   name: "",
   email: "",
-  hasJob: false,
+  hasJob: "false",
   number: "",
   job: "",
   hobbies: [],
@@ -47,7 +36,7 @@ const contactSchema = yup.object({
   city: yup.string(),
   name: yup.string().required(),
   email: yup.string().email().required(),
-  hasJob: yup.boolean(),
+  hasJob: yup.string(),
   number: yup.string().required(),
   job: yup.string(),
   hobbies: yup
@@ -72,10 +61,23 @@ const contactSchema = yup.object({
 });
 
 interface Props {}
-export function AddContactForm({}: Props) {
-  const onSubmit = (values: FormValues, formikHelpers: FormikHelpers<FormValues>) => {
+export function AddContactForm({ }: Props) {
+  const queryClient = useQueryClient();
+	
+  const { mutate } = useMutation({
+    mutationFn: (contactData: ContactData) => addContact(contactData),
 
-    console.log(values);
+    onSuccess: () => {
+      console.log("Contact added successfully");
+      queryClient.invalidateQueries({ queryKey: ['contacts'] });
+    },
+  });
+  const onSubmit = (
+    values: FormValues,
+    formikHelpers: FormikHelpers<FormValues>
+  ) => {
+    const data = { ...values, hasJob: values?.hasJob === "yes" ? true : false };
+    mutate(data);
     formikHelpers.resetForm();
   };
 
@@ -90,32 +92,32 @@ export function AddContactForm({}: Props) {
           Name*:
           <Field type="text" name="name" />
         </label>
-        < ErrorMessage component='span' className={css.error} name="name"/>
+        <ErrorMessage component="span" className={css.error} name="name" />
         <label>
           Email*:
           <Field type="email" name="email" />
         </label>
-        < ErrorMessage component='span' className={css.error} name="email"/>
+        <ErrorMessage component="span" className={css.error} name="email" />
         <label>
           Phone*:
           <Field type="text" name="number" />
         </label>
-        < ErrorMessage component='span' className={css.error} name="number"/>
+        <ErrorMessage component="span" className={css.error} name="number" />
         <label>
           City:
           <Field type="text" name="city" />
         </label>
-        < ErrorMessage component='span' className={css.error} name="city"/>
+        <ErrorMessage component="span" className={css.error} name="city" />
         <label>
           Job:
           <Field type="text" name="job" />
         </label>
-        < ErrorMessage component='span' className={css.error} name="job"/>
+        <ErrorMessage component="span" className={css.error} name="job" />
         <label>
           Birth Date*:
           <Field type="date" name="birthDay" />
         </label>
-        < ErrorMessage component='span' className={css.error} name="birthDay"/>
+        <ErrorMessage component="span" className={css.error} name="birthDay" />
 
         <fieldset>
           <legend>Contact has a job?</legend>
@@ -127,7 +129,7 @@ export function AddContactForm({}: Props) {
             <Field type="radio" name="hasJob" value="no" />
             No
           </label>
-          < ErrorMessage component='span' className={css.error} name="hasJob"/>
+          <ErrorMessage component="span" className={css.error} name="hasJob" />
         </fieldset>
 
         <label>
@@ -136,7 +138,7 @@ export function AddContactForm({}: Props) {
             <option value="female">Female</option>
           </Field>
         </label>
-        < ErrorMessage component='span' className={css.error} name="sex"/>
+        <ErrorMessage component="span" className={css.error} name="sex" />
 
         <fieldset>
           <legend>Hobbies</legend>
@@ -176,14 +178,18 @@ export function AddContactForm({}: Props) {
             <Field type="checkbox" name="hobbies" value="shopping" />
             Shopping
           </label>
-          < ErrorMessage component='span' className={css.error} name="hobbies"/>
+          <ErrorMessage component="span" className={css.error} name="hobbies" />
         </fieldset>
 
         <label htmlFor="description">
           Description
           <textarea name="description"></textarea>
         </label>
-        < ErrorMessage component='span' className={css.error} name="description"/>
+        <ErrorMessage
+          component="span"
+          className={css.error}
+          name="description"
+        />
 
         <button>Add</button>
       </Form>
