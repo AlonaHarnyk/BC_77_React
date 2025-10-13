@@ -36,6 +36,10 @@ const App = () => {
     setIsFormVisisble(true);
   };
 
+  const handleCloseForm = () => {
+    setIsFormVisisble(false);
+  };
+
   return (
     <>
       <button onClick={toggleVisibility}>
@@ -46,6 +50,9 @@ const App = () => {
       {isListVisible && data && data.length > 0 && (
         <div>
           <button onClick={handleFormVisibility}> Add contact</button>
+          {isFormVisible && (
+            <button onClick={handleCloseForm}> Close Form</button>
+          )}
           {isFormVisible && <AddContactForm />}
 
           <SearchForm onSubmit={handleFormSubmit} />
