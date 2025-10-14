@@ -6,6 +6,8 @@ import ContactsList from "../ContactsList/ContactsList";
 import { getContacts } from "../../services/api";
 import SearchForm from "../SearchForm/SearchForm";
 import { AddContactForm } from "../AddContactForm/AddContactForm";
+import Modal from "../Modal/Modal";
+import type { Contact } from "../types/contact";
 
 const useToggle = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,13 +22,22 @@ const App = () => {
   const [isFormVisible, setIsFormVisisble] = useState(false);
   const [curentPage, setCurentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const { isOpen, open, close } = useToggle();
+  // const { isOpen, open, close } = useToggle();
+  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["contacts", isListVisible, curentPage, searchQuery],
     queryFn: () => getContacts(curentPage, searchQuery),
     enabled: isListVisible === true,
   });
+
+  const handleOpenModal = (contact: Contact) => {
+    setSelectedContact(contact);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedContact(null);
+  };
 
   const handleLoadMore = () => {
     setCurentPage(curentPage + 1);
@@ -73,9 +84,11 @@ const App = () => {
             <button onClick={handleCloseForm}> Close Form</button>
           )}
           {isFormVisible && <AddContactForm />}
-
+          {selectedContact && (
+            <Modal onClose={handleCloseModal} contact={selectedContact} />
+          )}
           <SearchForm onSearch={handleSearch} searchQuery={searchQuery} />
-          <ContactsList contacts={data} />
+          <ContactsList contacts={data} onModalOpen={handleOpenModal} />
           {data.length >= 5 && (
             <button onClick={handleLoadMore}>Load more</button>
           )}

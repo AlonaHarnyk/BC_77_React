@@ -2,10 +2,17 @@ export interface Contact {
   name: string;
   number: string;
   id: string;
+  birthDay: Date;
+  city: string;
+  email: string;
+  hasJob: boolean;
+  job: string;
+  hobbies: HobbiesValues[];
+  description: string;
+  sex: "male" | "female";
 }
 
-
-export type HobbiesValues  =
+export type HobbiesValues =
   | "hiking"
   | "fishing"
   | "travel"
@@ -15,4 +22,3 @@ export type HobbiesValues  =
   | "sing"
   | "dance"
   | "shopping";
-
