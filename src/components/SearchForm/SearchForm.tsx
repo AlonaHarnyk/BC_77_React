@@ -1,24 +1,20 @@
 import React from "react";
 
 interface Props {
-  onSubmit: (search: string) => void;
+  onSearch: (search: string) => void;
 }
 
-export default function SearchForm({ onSubmit }: Props) {
-  const handleOnSubmit = (formData: FormData) => {
-    const result = formData.get("search") as string;
-    onSubmit(result);
+export default function SearchForm({ onSearch }: Props) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSearch(e.target.value);
   };
 
   return (
     <div>
-      <form action={handleOnSubmit}>
-        <label>
-          Search query:
-          <input type="text" name="search" />
-        </label>
-        <button>Search</button>
-      </form>
+      <label>
+        Search query:
+        <input type="text" name="search" onChange={handleChange} />
+      </label>
     </div>
   );
 }

@@ -27,7 +27,7 @@ const App = () => {
     setIsVisisble(!isListVisible);
   };
 
-  const handleFormSubmit = (search: string) => {
+  const handleSearch = (search: string) => {
     setCurentPage(1);
     setSearchQuery(search);
   };
@@ -55,7 +55,7 @@ const App = () => {
           )}
           {isFormVisible && <AddContactForm />}
 
-          <SearchForm onSubmit={handleFormSubmit} />
+          <SearchForm onSearch={handleSearch} />
           <ContactsList contacts={data} />
           {data.length >= 5 && (
             <button onClick={handleLoadMore}>Load more</button>
