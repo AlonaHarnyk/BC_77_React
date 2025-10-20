@@ -1,0 +1,11 @@
+.list {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  gap: 30px;
+}
+
+.link {
+  display: block;
+  padding: 30px 0;
+}
