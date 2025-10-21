@@ -22,6 +22,15 @@ export async function getContacts() {
   return res.data;
 }
 
+export async function getContactById(id:string) {
+  const res = await axios.get<Contact>(
+    `https://6240d2109b450ae274385b44.mockapi.io/api/contacts/${id}`,
+   
+  );
+  return res.data;
+}
+
+
 // export async function addContact(contactData: ContactData): Promise<Contact> {
 //   const res = await axios.post<Contact>(
 //     "https://6240d2109b450ae274385b44.mockapi.io/api/contacts",
