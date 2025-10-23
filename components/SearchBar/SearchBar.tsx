@@ -22,12 +22,16 @@
 
 import { useRouter } from "next/navigation";
 
-export default function SearchBar() {
+interface Props {
+  sex: string;
+}
+
+export default function SearchBar({ sex }: Props) {
   const router = useRouter();
 
   const handleSubmit = (formData: FormData) => {
     const search = formData.get("search" as string);
-    router.push(`/contacts/search/${search}`);
+    router.push(`/contacts/search/${sex}/${search}`);
   };
 
   return (

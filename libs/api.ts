@@ -14,11 +14,18 @@ export interface ContactData {
   sex: "male" | "female";
 }
 
-export async function getContacts(search?: string) {
+export async function getContacts( sex?: string, search?: string) {
+  console.log(sex,search);
   const res = await axios.get<Contact[]>(
     "https://6240d2109b450ae274385b44.mockapi.io/api/contacts",
-    {params:{search}}
+    {
+      params: {
+        sex,
+        search,
+      }
+    }
   );
+  console.log(res.data);
   return res.data;
 }
 
