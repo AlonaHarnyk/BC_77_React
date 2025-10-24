@@ -17,20 +17,9 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            <ul>
-              <li>
-                <Link href={"/contacts/search/all"}>All contacts</Link>
-              </li>
-              <li>
-                <Link href={"/contacts/search/female"}>Female contacts</Link>
-              </li>
-              {/* <li>
-                <Link href={"/contacts/search/male"}>Male contacts</Link>
-              </li> */}
-            </ul>
-            {/* <Link className={css.link} href="/contacts">
+            <Link className={css.link} href="/contacts/search/all">
               Contacts
-            </Link> */}
+            </Link>
           </li>
         </ul>
       </nav>
