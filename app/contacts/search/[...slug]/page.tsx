@@ -12,7 +12,7 @@ export default async function SearchPage({ params }: Props) {
     slug[0] === "all" ? undefined : slug[0],
     slug[1]
   );
-  console.log(slug);
+
   return (
     <>
       <SearchBar sex={slug[0]} />

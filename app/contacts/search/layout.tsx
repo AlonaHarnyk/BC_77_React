@@ -6,7 +6,6 @@ interface Props {
 }
 
 export default function SearchLayout({ children, filters }: Props) {
-  console.log(filters);
   return (
     <div>
       {filters}

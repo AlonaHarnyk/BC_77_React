@@ -5,7 +5,7 @@ export interface Contact {
   birthDay: Date;
   city: string;
   email: string;
-  hasJob: boolean;
+  hasWork: boolean;
   job: string;
   hobbies: HobbiesValues[];
   description: string;

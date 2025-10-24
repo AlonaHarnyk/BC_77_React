@@ -6,7 +6,7 @@ export interface ContactData {
   city: string;
   name: string;
   email: string;
-  hasJob: boolean;
+  hasWork: boolean;
   number: string;
   job: string;
   hobbies: HobbiesValues[];
@@ -14,18 +14,17 @@ export interface ContactData {
   sex: "male" | "female";
 }
 
-export async function getContacts( sex?: string, search?: string) {
-  console.log(sex,search);
+export async function getContacts( hasWork?: string, search?: string) {
   const res = await axios.get<Contact[]>(
     "https://6240d2109b450ae274385b44.mockapi.io/api/contacts",
     {
       params: {
-        sex,
+        hasWork,
         search,
       }
     }
   );
-  console.log(res.data);
+
   return res.data;
 }
 
