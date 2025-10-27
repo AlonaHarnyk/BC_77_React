@@ -1,9 +1,19 @@
 import ContactsList from "@/components/ContactsList/ContactsList";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import { getContacts } from "@/libs/api";
+import { title } from "process";
 
 interface Props {
   params: Promise<{ slug: string[] }>;
+}
+
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
+  const category = slug[0];
+  return {
+    title: category === "all" ? "All" : `Has Job: ${category}`,
+    description: `Contacts by filters: ${slug.join(", ")}`,
+  };
 }
 
 export default async function SearchPage({ params }: Props) {
