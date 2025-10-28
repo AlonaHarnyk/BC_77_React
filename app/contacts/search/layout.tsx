@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 export default function SearchLayout({ children, filters }: Props) {
   return (
     <div>
+      
       {filters}
       {children}
     </div>

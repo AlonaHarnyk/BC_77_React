@@ -14,36 +14,34 @@ export interface ContactData {
   sex: "male" | "female";
 }
 
-export async function getContacts( hasWork?: string, search?: string) {
+export async function getContacts(hasWork?: string, search?: string) {
   const res = await axios.get<Contact[]>(
     "https://6240d2109b450ae274385b44.mockapi.io/api/contacts",
     {
       params: {
         hasWork,
         search,
-      }
+      },
     }
   );
 
   return res.data;
 }
 
-export async function getContactById(id:string) {
+export async function getContactById(id: string) {
   const res = await axios.get<Contact>(
-    `https://6240d2109b450ae274385b44.mockapi.io/api/contacts/${id}`,
-   
+    `https://6240d2109b450ae274385b44.mockapi.io/api/contacts/${id}`
   );
   return res.data;
 }
 
-
-// export async function addContact(contactData: ContactData): Promise<Contact> {
-//   const res = await axios.post<Contact>(
-//     "https://6240d2109b450ae274385b44.mockapi.io/api/contacts",
-//     contactData
-//   );
-//   return res.data;
-// }
+export async function addContact(contactData: ContactData): Promise<Contact> {
+  const res = await axios.post<Contact>(
+    "https://6240d2109b450ae274385b44.mockapi.io/api/contacts",
+    contactData
+  );
+  return res.data;
+}
 
 // export async function deleteContact(id: string): Promise<void> {
 //   await axios.delete<Contact>(
