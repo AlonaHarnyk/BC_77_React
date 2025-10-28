@@ -1,10 +1,12 @@
 "use client";
 
 import { addContact, ContactData } from "@/libs/api";
+import { useFormDataStore } from "@/store/formDataStore";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 export function CreateContactForm({}) {
+  const { data, setData, clearData } = useFormDataStore();
   const router = useRouter();
 
   const { mutate } = useMutation({
@@ -17,102 +19,75 @@ export function CreateContactForm({}) {
   function handleSubmit(formData: FormData) {
     const data = Object.fromEntries(formData) as unknown as ContactData;
     mutate(data);
+    clearData();
   }
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+    console.log(e.target.value);
+  };
 
   return (
     <form action={handleSubmit}>
       <label>
         Name*:
-        <input type="text" name="name" />
+        <input
+          type="text"
+          name="name"
+          onChange={handleChange}
+          defaultValue={data.name}
+        />
       </label>
 
       <label>
         Email*:
-        <input type="email" name="email" />
+        <input
+          type="email"
+          name="email"
+          onChange={handleChange}
+          defaultValue={data.email}
+        />
       </label>
 
       <label>
         Phone*:
-        <input type="text" name="number" />
+        <input
+          type="text"
+          name="number"
+          onChange={handleChange}
+          defaultValue={data.number}
+        />
       </label>
 
       <label>
         City:
-        <input type="text" name="city" />
+        <input
+          type="text"
+          name="city"
+          onChange={handleChange}
+          defaultValue={data.city}
+        />
       </label>
 
       <label>
         Job:
-        <input type="text" name="job" />
+        <input
+          type="text"
+          name="job"
+          onChange={handleChange}
+          defaultValue={data.job}
+        />
       </label>
-
-      <label>
-        Birth Date*:
-        <input type="date" name="birthDay" />
-      </label>
-
-      <fieldset>
-        <legend>Contact has a job?</legend>
-        <label>
-          <input type="radio" name="hasJob" value="yes" />
-          Yes
-        </label>
-        <label>
-          <input type="radio" name="hasJob" value="no" />
-          No
-        </label>
-      </fieldset>
-
-      <label>
-        <select name="sex">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </label>
-
-      <fieldset>
-        <legend>Hobbies</legend>
-        <label>
-          <input type="checkbox" name="hobbies" value="hiking" />
-          Hiking
-        </label>
-        <label>
-          <input type="checkbox" name="hobbies" value="fishing" />
-          Fishing
-        </label>
-        <label>
-          <input type="checkbox" name="hobbies" value="travel" />
-          Travel
-        </label>
-        <label>
-          <input type="checkbox" name="hobbies" value="rest" />
-          Active rest
-        </label>
-        <label>
-          <input type="checkbox" name="hobbies" value="sport" />
-          Sport
-        </label>
-        <label>
-          <input type="checkbox" name="hobbies" value="learning" />
-          Learn in GoIT
-        </label>
-        <label>
-          <input type="checkbox" name="hobbies" value="sing" />
-          Singing
-        </label>
-        <label>
-          <input type="checkbox" name="hobbies" value="dance" />
-          Dancing
-        </label>
-        <label>
-          <input type="checkbox" name="hobbies" value="shopping" />
-          Shopping
-        </label>
-      </fieldset>
 
       <label htmlFor="description">
         Description
-        <textarea name="description"></textarea>
+        <textarea
+          name="description"
+          onChange={handleChange}
+          defaultValue={data.description}
+        ></textarea>
       </label>
 
       <button>Add</button>

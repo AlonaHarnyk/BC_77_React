@@ -1,17 +1,17 @@
 import axios from "axios";
-import { Contact, HobbiesValues } from "./contact";
+import { Contact } from "./contact";
 
 export interface ContactData {
-  birthDay: Date;
+  // birthDay: Date;
   city: string;
   name: string;
   email: string;
-  hasWork: boolean;
+  // hasWork: boolean;
   number: string;
   job: string;
-  hobbies: HobbiesValues[];
+  // hobbies: HobbiesValues[];
   description: string;
-  sex: "male" | "female";
+  // sex: "male" | "female";
 }
 
 export async function getContacts(hasWork?: string, search?: string) {
