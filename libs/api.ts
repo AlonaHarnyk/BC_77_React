@@ -14,16 +14,17 @@ export interface ContactData {
   sex: "male" | "female";
 }
 
+const nextServer = axios.create({
+  baseURL: "http://localhost:3000",
+});
+
 export async function getContacts(hasWork?: string, search?: string) {
-  const res = await axios.get<Contact[]>(
-    "https://6240d2109b450ae274385b44.mockapi.io/api/contacts",
-    {
-      params: {
-        hasWork,
-        search,
-      },
-    }
-  );
+  const res = await nextServer.get<Contact[]>("/api/contacts", {
+    params: {
+      hasWork,
+      search,
+    },
+  });
 
   return res.data;
 }

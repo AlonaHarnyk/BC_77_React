@@ -1,7 +1,6 @@
 import ContactsList from "@/components/ContactsList/ContactsList";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import { getContacts } from "@/libs/api";
-import { title } from "process";
 
 interface Props {
   params: Promise<{ slug: string[] }>;
