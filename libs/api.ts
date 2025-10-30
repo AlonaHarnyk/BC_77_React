@@ -15,11 +15,11 @@ export interface ContactData {
 }
 
 const nextServer = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "http://localhost:3000/api",
 });
 
 export async function getContacts(hasWork?: string, search?: string) {
-  const res = await nextServer.get<Contact[]>("/api/contacts", {
+  const res = await nextServer.get<Contact[]>("/contacts", {
     params: {
       hasWork,
       search,
@@ -30,17 +30,12 @@ export async function getContacts(hasWork?: string, search?: string) {
 }
 
 export async function getContactById(id: string) {
-  const res = await axios.get<Contact>(
-    `https://6240d2109b450ae274385b44.mockapi.io/api/contacts/${id}`
-  );
+  const res = await nextServer.get<Contact>(`/contacts/${id}`);
   return res.data;
 }
 
 export async function addContact(contactData: ContactData): Promise<Contact> {
-  const res = await axios.post<Contact>(
-    "https://6240d2109b450ae274385b44.mockapi.io/api/contacts",
-    contactData
-  );
+  const res = await nextServer.post<Contact>("/contacts", contactData);
   return res.data;
 }
 

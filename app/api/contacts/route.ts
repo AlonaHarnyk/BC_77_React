@@ -18,6 +18,17 @@ export async function GET(request: NextRequest) {
   }
 }
 
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { data } = await api.post("/contacts", body);
+    return NextResponse.json(data);
+  } catch (error) {
+    const resError = error as ApiError;
+    return NextResponse.json({ status: resError.response?.data.status });
+  }
+}
+
 // export async function GET(request: NextRequest) {
 //   const categoryId = request.nextUrl.searchParams.get("categoryId");
 //   try {
