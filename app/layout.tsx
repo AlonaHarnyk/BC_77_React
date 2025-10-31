@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Roboto } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header/Header";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import AuthProvider from "@/components/AuthProvider/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,9 +37,11 @@ export default function RootLayout({ children, preview }: Props) {
         className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable}`}
       >
         <TanStackProvider>
-          <Header />
-          {children}
-          {preview}
+          <AuthProvider>
+            <Header />
+            {children}
+            {preview}
+          </AuthProvider>
         </TanStackProvider>
       </body>
     </html>

@@ -1,7 +1,14 @@
+"use client";
+
+import { logoutUser } from "@/libs/api";
 import css from "./header.module.css";
 import Link from "next/link";
 
 export default function Header() {
+  const handleLogout = async () => {
+    await logoutUser();
+  };
+
   return (
     <header>
       <nav>
@@ -21,6 +28,17 @@ export default function Header() {
               Contacts
             </Link>
           </li>
+          <li>
+            <Link className={css.link} href="/register">
+              Sign up
+            </Link>
+          </li>
+          <li>
+            <Link className={css.link} href="/login">
+              Log in
+            </Link>
+          </li>
+          <button onClick={handleLogout}>Logout</button>
         </ul>
       </nav>
     </header>
